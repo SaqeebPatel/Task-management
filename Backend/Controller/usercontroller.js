@@ -62,8 +62,26 @@ async function login(req, res) {
     });
   }
 }
+// ................................userinfo............................................
+async function userinfo(req, res) {
+  console.log("****", req.user);
+  const id = req.user._id;
+  try {
+    const user = await usermodel.findById(id);
+    console.log(user);
+    if (!user) {
+      res.status(404).send({ msg: "User does not found", success: false });
+    } else {
+      res.status(201).send({ user: user, success: true });
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
 
 module.exports = {
   register,
   login,
+  userinfo
 };
