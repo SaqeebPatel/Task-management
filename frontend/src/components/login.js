@@ -12,7 +12,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const navigate = useNavigate();
+  const navigae = useNavigate();
 
   const firstnamechange = (e) => setFirstname(e.target.value);
   const lastnamechange = (e) => setLastname(e.target.value);

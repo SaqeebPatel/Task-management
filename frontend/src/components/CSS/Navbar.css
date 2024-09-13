@@ -1,30 +1,157 @@
+/* Base styles for navbar */
 .navbar {
+    height: 100px;
+    gap: 0px;
+    opacity: 1; /* Set opacity to 1 for visibility */
     background-color: #f8f8f8;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0 20px; /* Add horizontal padding for spacing */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out the brand, search, and icons */
+    box-sizing: border-box; /* Ensure padding is included in the width */
 }
+
+/* Navbar brand styles */
 .navbar-brand {
     font-size: 24px;
 }
+
 .navbar-brand span {
     color: #f45a5a;
 }
+
+/* Form control styles */
 .form-control {
     border-radius: 20px;
 }
+
+/* Button styles */
 .btn-search {
     background-color: #f45a5a;
     color: white;
     border-radius: 50%;
 }
+
+/* Icon styles */
 .nav-icons {
     font-size: 20px;
     color: #f45a5a;
 }
+
+/* Date display styles */
 .date-display {
     font-weight: bold;
     color: #000000;
 }
+
 .date-display span {
     color: #3ABEFF;
-    font-size:14px;
+    font-size: 14px;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .navbar {
+        padding: 0 15px; /* Adjust padding for medium-sized screens */
+    }
+
+    .navbar-brand {
+        font-size: 22px; /* Slightly reduce font size */
+    }
+
+    .nav-icons {
+        font-size: 18px; /* Slightly reduce icon size */
+    }
+
+    .btn-search {
+        padding: 8px; /* Adjust button size */
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: flex-start;
+        height: auto; /* Allow height to adjust based on content */
+    }
+
+    .navbar-brand {
+        font-size: 20px; /* Further reduce font size */
+        margin-bottom: 10px; /* Add spacing below brand */
+    }
+
+    .form-control {
+        width: 100%; /* Full width on smaller screens */
+        margin-bottom: 10px; /* Add spacing below form control */
+    }
+
+    .btn-search {
+        width: 40px; /* Adjust button size */
+        height: 40px;
+        padding: 0; /* Remove padding */
+    }
+
+    .nav-icons {
+        font-size: 16px; /* Reduce icon size */
+        margin: 5px; /* Add spacing around icons */
+    }
+
+    .date-display {
+        font-size: 14px; /* Adjust font size for date display */
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 10px; /* Reduce padding for very small screens */
+    }
+
+    .navbar-brand {
+        font-size: 18px; /* Further reduce font size */
+    }
+
+    .form-control {
+        font-size: 14px; /* Adjust font size for form control */
+    }
+
+    .btn-search {
+        width: 35px; /* Adjust button size */
+        height: 35px;
+    }
+
+    .nav-icons {
+        font-size: 14px; /* Reduce icon size */
+    }
+
+    .date-display {
+        font-size: 12px; /* Adjust font size for date display */
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        padding: 0 5px; /* Minimal padding for very small screens */
+    }
+
+    .navbar-brand {
+        font-size: 16px; /* Smallest font size */
+    }
+
+    .form-control {
+        font-size: 12px; /* Small font size for form control */
+    }
+
+    .btn-search {
+        width: 30px; /* Smallest button size */
+        height: 30px;
+    }
+
+    .nav-icons {
+        font-size: 12px; /* Smallest icon size */
+    }
+
+    .date-display {
+        font-size: 10px; /* Smallest font size for date display */
+    }
 }

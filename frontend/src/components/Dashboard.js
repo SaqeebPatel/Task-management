@@ -1,19 +1,16 @@
 
-
+// export default Dashboard;
 import React, { useEffect, useState } from "react";
 import { Nav, Container, Image } from "react-bootstrap";
-import Navbar from "./Navbar";
-import {
-  FaTachometerAlt,
-  FaTasks,
-  FaCog,
-  FaExclamationCircle,
-  FaQuestionCircle,
-} from "react-icons/fa";
+import { Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
-import { Link, Routes, Route } from "react-router-dom";
+import TaskDashboard from "../components/SideNavbarItems/TaskDashboard";
+import Navbar from "../components/Navbar";
+import AdTaskModal from "../components/SideNavbarItems/AddTaskModal";
+import TaskCategory from "../components/SideNavbarItems/TaskCategories";
+import AccountInformation from "../components/SideNavbarItems/AccountInformation";
+import SignInPage from "../components/SignInPage";
 import "../components/CSS/Sidebar.css";
-// import TaskDashboard from "../components/sideitems/TaskDashboard";
 
 const Dashboard = () => {
   const [user, setUser] = useState({});
@@ -39,71 +36,87 @@ const Dashboard = () => {
 
   return (
     <>
-    <div><Navbar /></div>
-    <div className="d-flex" style={{ marginTop: "3%"}}>
-
-      {/* Sidebar */}
-      <div className="sidebar fixed-left">
-        <Container className="text-center mt-3">
-          <Image
-            src="https://via.placeholder.com/100"
-            roundedCircle
-            className="mb-3"
-          />
-          <h5>
-            {user.firstname}
-            <span style={{ marginLeft: "7px" }}>{user.lastname}</span>
-          </h5>
-          <p>{user.email}</p>
-        </Container>
-      
-        <Nav className="flex-column">
-          <Nav.Link as={Link} to="taskhome" className="nav-link-custom">
-            <FaTachometerAlt /> Dashboard
-          </Nav.Link>
-
-          <Nav.Link as={Link} to="vitaltask" className="nav-link-custom">
-            <FaExclamationCircle /> Vital Task
-          </Nav.Link>
-
-          <Nav.Link as={Link} to="my-task" className="nav-link-custom">
-            <FaTasks /> My Task
-          </Nav.Link>
-
-          <Nav.Link as={Link} to="task-categories" className="nav-link-custom">
-            <FaTasks /> Task Categories
-          </Nav.Link>
-
-          <Nav.Link as={Link} to="settings" className="nav-link-custom">
-            <FaCog /> Settings
-          </Nav.Link>
-
-          <Nav.Link as={Link} to="help" className="nav-link-custom">
-            <FaQuestionCircle /> Help
-          </Nav.Link>
-              
-          <Nav.Link as={Link} to="logout" className="nav-link-custom">
-            <FaQuestionCircle /> Logout
-          </Nav.Link>
-        </Nav>
+      <div>
+        <Navbar />
       </div>
+      <div className="d-flex" style={{ marginTop: "3%" }}>
+        <div
+          className="d-flex flex-column bg-danger text-white p-3 sidebar"
+          id="sidebar"
+        >
+          <div className="profile-pic-container">
+          <Nav.Link as={Link} to="accountInformation" className="text-white mb-3">
+            <img
+              src="https://mrwallpaper.com/images/hd/cool-smiley-profile-picture-6lqzc2aegkuxbini.jpg"
+              alt="Profile"
+              className="profile-pic"
+            />
+           </Nav.Link>
+          </div>
+          <div className="text-center mt-5">
+            <h5>
+              {user.firstname}
+              <span style={{ marginLeft: "7px" }}>{user.lastname}</span>
+            </h5>
+            <p>{user.email}</p>
+          </div>
 
-      {/* Main content area */}
-      <div
-        className="content"
-        style={{ marginLeft: "250px", padding: "20px", width: "100%" }}
-      >
-        {/* <Routes>
-          <Route path="taskhome" element={<TaskDashboard />} />
-          <Route path="vitaltask" element={<h1>Vital Task</h1>} />
-          <Route path="my-task" element={<h1>My Task</h1>} />
-          <Route path="task-categories" element={<h1>Task Categories</h1>} />
-          <Route path="settings" element={<h1>Settings</h1>} />
-          <Route path="help" element={<h1>Help</h1>} />
-          <Route path="logout" element={<h1>Logout</h1>} />
-        </Routes> */}
+          <Nav className="d-flex flex-column vh-100">
+            <div>
+              <Nav.Link
+                as={Link}
+                to="taskDashboard"
+                className="text-white mb-3"
+              >
+                <i className="bi bi-grid-fill me-2"></i> Dashboard
+              </Nav.Link>
+              <Nav.Link as={Link} to="vitaltask" className="text-white mb-3">
+                <i className="bi bi-exclamation-circle-fill me-2"></i> Vital
+                Task
+              </Nav.Link>
+              <Nav.Link as={Link} to="my-task" className="text-white mb-3">
+                <i className="bi bi-list-task me-2"></i> My Task
+              </Nav.Link>
+              <Nav.Link
+                as={Link}
+                to="taskCategory"
+                className="text-white mb-3"
+              >
+                <i className="bi bi-folder-fill me-2"></i> Task Categories
+              </Nav.Link>
+              <Nav.Link as={Link} to="settings" className="text-white mb-3">
+                <i className="bi bi-gear-fill me-2"></i> Settings
+              </Nav.Link>
+              <Nav.Link as={Link} to="help" className="text-white mb-3">
+                <i className="bi bi-question-circle-fill me-2"></i> Help
+              </Nav.Link>
+            </div>
+
+            <Nav.Link as={Link} to="signInPage" className="text-white mb-3 mt-auto">
+              <i className="bi bi-box-arrow-left me-2"></i> Logout
+            </Nav.Link>
+          </Nav>
+        </div>
+
+        <div
+          className="content"
+          style={{ marginLeft: "60px", padding: "20px", width: "100%" }}
+        >
+          <Routes>
+            <Route path="taskDashboard" element={<TaskDashboard />} />
+          
+ 
+            <Route path="taskCategory" element={<TaskCategory/>} />
+          
+           
+         
+            <Route path="ad-task" element={<AdTaskModal />} />
+            <Route path="accountInformation" element={<AccountInformation/>} />
+            <Route path="signInPage" element={<SignInPage/>} />
+          </Routes>
+        </div>
       </div>
-    </div></>
+    </>
   );
 };
 

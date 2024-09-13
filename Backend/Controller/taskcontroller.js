@@ -3,27 +3,20 @@ const taskmodel = require("../Module/Task");
 const prioritymodel = require("../Module/Priority");
 const usermodel = require("../Module/User");
 
-// ................................... Addproducts.................................
+// ******** Addproducts*************
 async function addtask(req, res) {
   console.log(req.body);
   const userid = req.user._id;
 
-  const {
-    title,
-    description,
-    category,
-    priority,
-    image,
-    createdBy,
-    createdAt,
-  } = req.body;
+  const { title, description, priority, taskDate, status, image } = req.body;
+
+  const allowedPriorities = ["Extreme", "Moderate", "Low"];
 
   try {
-    const existingpriority = await prioritymodel.findById(priority);
-    if (!existingpriority) {
+    if (!allowedPriorities.includes(priority)) {
       return res
-        .status(404)
-        .send({ msg: "Priority not found", success: false });
+        .status(400)
+        .send({ msg: "Invalid priority value", success: false });
     }
 
     const existingtask = await taskmodel.findOne({
@@ -33,14 +26,15 @@ async function addtask(req, res) {
     if (existingtask) {
       return res
         .status(400)
-        .send({ msg: "task already exists", success: false });
+        .send({ msg: "Task already exists", success: false });
     }
 
     const newtask = new taskmodel({
       title,
       description,
-      category,
       priority,
+      taskDate,
+      status,
       image,
       createdBy: userid,
       createdAt: Date.now(),
@@ -54,7 +48,7 @@ async function addtask(req, res) {
   }
 }
 
-// ..................................... Addcollaboraters ................................
+// *************** Addcollaboraters ***********
 const addCollaborator = async (req, res) => {
   try {
     const { id: taskId } = req.params;
@@ -93,7 +87,7 @@ const addCollaborator = async (req, res) => {
   }
 };
 
-// ............................................getalltask...................................
+// *******getalltask***************
 async function gettaskbyid(req, res) {
   console.log(req.body);
   const { id } = req.params;
@@ -109,7 +103,7 @@ async function gettaskbyid(req, res) {
   }
 }
 
-// .......................................getalltask...........................
+// ****************getalltask***********
 async function getalltask(req, res) {
   try {
     const tasks = await taskmodel.find();
@@ -120,6 +114,8 @@ async function getalltask(req, res) {
       description: task.description,
       category: task.category,
       priority: task.priority,
+      taskDate: task.taskDate,
+      status: task.status,
       image: task.image,
       createdBy: task.createdBy,
       createdAt: task.createdAt,
@@ -133,7 +129,7 @@ async function getalltask(req, res) {
   }
 }
 
-// ......................................... updatetask..................................
+// ***** updatetask*******
 async function updatetask(req, res) {
   console.log(req.body);
   const { id: taskid } = req.params;
@@ -167,7 +163,7 @@ async function updatetask(req, res) {
   }
 }
 
-// .................................Delete task ...........................
+// **********Delete task **********
 
 async function deletetask(req, res) {
   console.log(req.body);
@@ -185,7 +181,9 @@ async function deletetask(req, res) {
 
 module.exports = {
   addtask,
- addCollaborator,
+  //   ***Addcollbolaters***
+  addCollaborator,
+  //   *************
   gettaskbyid,
   getalltask,
   updatetask,
