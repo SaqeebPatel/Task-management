@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import '../CSS/TaskCategories.css';  // Import the component-specific CSS file
-
+import { useNavigate } from 'react-router-dom'; // Import navigate
+import '../CSS/TaskCategories.css';  
+import AddCreatecategoryForm from"./AddCreatecategoryForm";
 const TaskCategories = () => {
   const [taskStatus, setTaskStatus] = useState([
     { id: 1, name: 'Completed' },
@@ -15,6 +16,8 @@ const TaskCategories = () => {
     { id: 3, name: 'Low' }
   ]);
 
+  const navigate = useNavigate(); // Initialize navigate function
+
   const handleEdit = (type, id) => {
     console.log(`Edit ${type} with id: ${id}`);
   };
@@ -23,11 +26,14 @@ const TaskCategories = () => {
     console.log(`Delete ${type} with id: ${id}`);
   };
 
+  const handleCategory = () => {
+    navigate("AddCreatecategoryForm"); // Navigate to the add category route
+  };
+
   return (
-  //  <div className='container' style={{marginTop:"20px"}}>
-     <div className="task-categories-container">
+    <div className="task-categories-container">
       <h2>Task Categories</h2>
-      <Button variant="primary" className="mb-3">Add Category</Button>
+      <Button variant="primary" className="mb-3" onClick={handleCategory}>Add Category</Button>
 
       <div className="mb-5">
         <h4>Task Status</h4>
@@ -81,7 +87,6 @@ const TaskCategories = () => {
         </Table>
       </div>
     </div>
-  //  </div>
   );
 };
 

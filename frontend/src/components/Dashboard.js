@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 import AdTaskModal from "../components/SideNavbarItems/AddTaskModal";
 import TaskCategory from "../components/SideNavbarItems/TaskCategories";
 import AccountInformation from "../components/SideNavbarItems/AccountInformation";
+import AddCreatecategoryForm from "../components/SideNavbarItems/AddCreatecategoryForm";
 import SignInPage from "../components/SignInPage";
 import "../components/CSS/Sidebar.css";
 
@@ -92,7 +93,7 @@ const Dashboard = () => {
               </Nav.Link>
             </div>
 
-            <Nav.Link as={Link} to="signInPage" className="text-white mb-3 mt-auto">
+            <Nav.Link as={Link} to="signInPage" className="text-white mb-2 mt-auto">
               <i className="bi bi-box-arrow-left me-2"></i> Logout
             </Nav.Link>
           </Nav>
@@ -106,13 +107,17 @@ const Dashboard = () => {
             <Route path="taskDashboard" element={<TaskDashboard />} />
           
  
-            <Route path="taskCategory" element={<TaskCategory/>} />
+            <Route path="taskCategory/*" element={<TaskCategory/>} />
           
            
          
             <Route path="ad-task" element={<AdTaskModal />} />
             <Route path="accountInformation" element={<AccountInformation/>} />
             <Route path="signInPage" element={<SignInPage/>} />
+            <Route
+              path="taskCategory/AddCreatecategoryForm"
+              element={<AddCreatecategoryForm />}
+            />
           </Routes>
         </div>
       </div>
