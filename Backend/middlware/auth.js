@@ -14,7 +14,7 @@ const authorise = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(bearerToken, "key");
+    const decoded = jwt.verify(bearerToken, "key",{ expiresIn: '5h' });
     req.user = decoded;
     next();
   } catch (error) {

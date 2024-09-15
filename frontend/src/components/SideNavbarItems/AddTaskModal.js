@@ -1,3 +1,7 @@
+
+
+
+
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import axios from "axios";
@@ -7,13 +11,14 @@ function AddTaskModal({ show, handleClose }) {
   const [taskDate, setTaskDate] = useState("");
   const [priority, setPriority] = useState("Moderate");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
-  const [status, setStatus] = useState("Not started"); // Added status state
+  const [image, setImage] = useState(null); // This will hold the file object
+  const [status, setStatus] = useState("Not started");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Handle image file selection
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    setImage(e.target.files[0]); // Set the file object
   };
 
   const handleSubmit = async (e) => {
@@ -24,23 +29,25 @@ function AddTaskModal({ show, handleClose }) {
       return;
     }
 
-    const payload = {
-      title,
-      taskDate, // Matching the name in your state and sending it to the backend
-      priority,
-      description,
-      status, // Adding status to the payload
-      image, // Base64 encoded image data (if needed)
-    };
+    // Create FormData instance
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("taskDate", taskDate);
+    formData.append("priority", priority);
+    formData.append("description", description);
+    formData.append("status", status);
+    if (image) {
+      formData.append("image", image); // Append the image file
+    }
 
     try {
       const response = await axios.post(
         "http://localhost:5000/api/task/addtask",
-        payload,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data", // Important for file uploads
           },
         }
       );
@@ -139,14 +146,9 @@ function AddTaskModal({ show, handleClose }) {
 
           <Form.Group controlId="taskImage" className="mt-3">
             <Form.Label>Upload Image</Form.Label>
-            <Form.Control
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
+            <Form.Control type="file" onChange={handleImageChange} />
           </Form.Group>
 
-          {/* Status Selection */}
           <Form.Group controlId="taskStatus" className="mt-3">
             <Form.Label>Status</Form.Label>
             <Form.Control

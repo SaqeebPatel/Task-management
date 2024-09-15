@@ -34,6 +34,8 @@ app.use("/api/category", categoryrouter);
 app.use("/api/priority", priorityrouter);
 app.use("/api/invite", inviterouter);
 
+app.use("/uploads", express.static("uploads"));
+
 // Listen to port from environment
 app.listen(process.env.PORT, () => {
   console.log(`Server running at http://localhost:${process.env.PORT}`);

@@ -11,6 +11,8 @@ import TaskCategory from "../components/SideNavbarItems/TaskCategories";
 import AccountInformation from "../components/SideNavbarItems/AccountInformation";
 import AddCreatecategoryForm from "../components/SideNavbarItems/AddCreatecategoryForm";
 import SignInPage from "../components/SignInPage";
+import Vitaltask from "../components/SideNavbarItems/VitalTasks";
+import MyTask from "../components/SideNavbarItems/MyTask";
 import "../components/CSS/Sidebar.css";
 
 const Dashboard = () => {
@@ -71,11 +73,11 @@ const Dashboard = () => {
               >
                 <i className="bi bi-grid-fill me-2"></i> Dashboard
               </Nav.Link>
-              <Nav.Link as={Link} to="vitaltask" className="text-white mb-3">
+              <Nav.Link as={Link} to="Vitaltask" className="text-white mb-3">
                 <i className="bi bi-exclamation-circle-fill me-2"></i> Vital
                 Task
               </Nav.Link>
-              <Nav.Link as={Link} to="my-task" className="text-white mb-3">
+              <Nav.Link as={Link} to="myTask" className="text-white mb-3">
                 <i className="bi bi-list-task me-2"></i> My Task
               </Nav.Link>
               <Nav.Link
@@ -114,10 +116,10 @@ const Dashboard = () => {
             <Route path="ad-task" element={<AdTaskModal />} />
             <Route path="accountInformation" element={<AccountInformation/>} />
             <Route path="signInPage" element={<SignInPage/>} />
-            <Route
-              path="taskCategory/AddCreatecategoryForm"
-              element={<AddCreatecategoryForm />}
-            />
+            <Route path="taskCategory/AddCreatecategoryForm"element={<AddCreatecategoryForm />} />
+            <Route path="Vitaltask" element={<Vitaltask />} />
+            <Route path="myTask" element={<MyTask />} />
+           
           </Routes>
         </div>
       </div>

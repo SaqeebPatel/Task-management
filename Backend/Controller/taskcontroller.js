@@ -1,14 +1,16 @@
+
+
 const mongoose = require("mongoose");
 const taskmodel = require("../Module/Task");
 const prioritymodel = require("../Module/Priority");
 const usermodel = require("../Module/User");
 
 // ******** Addproducts*************
-async function addtask(req, res) {
+const addtask = async (req, res) => {
   console.log(req.body);
   const userid = req.user._id;
 
-  const { title, description, priority, taskDate, status, image } = req.body;
+  const { title, description, priority, taskDate, status } = req.body;
 
   const allowedPriorities = ["Extreme", "Moderate", "Low"];
 
@@ -29,6 +31,9 @@ async function addtask(req, res) {
         .send({ msg: "Task already exists", success: false });
     }
 
+    // Handle image upload (if an image is included)
+    const image = req.file ? req.file.filename : null;
+
     const newtask = new taskmodel({
       title,
       description,
@@ -46,7 +51,7 @@ async function addtask(req, res) {
     console.error(error);
     res.status(500).send("Server Error");
   }
-}
+};
 
 // *************** Addcollaboraters ***********
 const addCollaborator = async (req, res) => {
@@ -116,7 +121,7 @@ async function getalltask(req, res) {
       priority: task.priority,
       taskDate: task.taskDate,
       status: task.status,
-      image: task.image,
+      image: task.image ? `http://localhost:5000/uploads/${task.image}` : null,
       createdBy: task.createdBy,
       createdAt: task.createdAt,
       collaboraters: task.collaboraters,
@@ -179,6 +184,38 @@ async function deletetask(req, res) {
   }
 }
 
+const getFilteredTasks = async (req, res) => {
+  try {
+    const tasks = await taskmodel.find({
+      priority: { $in: ["Moderate", "Extreme"] },
+    });
+
+    res.status(201).send({
+      success: true,
+      tasks,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Unable to retrieve tasks",
+    });
+  }
+};
+// .............................................................
+const getTasksForUser = async (req, res) => {
+  try {
+    // Fetch tasks created by the logged-in user
+    const tasks = await taskmodel.find({ createdBy: req.user._id });
+
+    if (tasks.length === 0) {
+      return res.status(404).json({ message: "No tasks found for this user" });
+    }
+
+    res.status(200).send({ tasks });
+  } catch (error) {
+    res.status(500).send({ message: "Server Error", error });
+  }
+};
 module.exports = {
   addtask,
   //   ***Addcollbolaters***
@@ -188,4 +225,6 @@ module.exports = {
   getalltask,
   updatetask,
   deletetask,
+  getFilteredTasks,
+  getTasksForUser,
 };
