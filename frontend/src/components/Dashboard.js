@@ -1,8 +1,6 @@
-
-// export default Dashboard;
 import React, { useEffect, useState } from "react";
-import { Nav, Container, Image } from "react-bootstrap";
-import { Routes, Route, Link } from "react-router-dom";
+import { Nav } from "react-bootstrap";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";  // Import useNavigate
 import axios from "axios";
 import TaskDashboard from "../components/SideNavbarItems/TaskDashboard";
 import Navbar from "../components/Navbar";
@@ -17,6 +15,8 @@ import "../components/CSS/Sidebar.css";
 
 const Dashboard = () => {
   const [user, setUser] = useState({});
+  const [isLoggedOut, setIsLoggedOut] = useState(false);  // Track if the user is logged out
+  const navigate = useNavigate();  // Initialize useNavigate
 
   useEffect(() => {
     async function getUserInfo() {
@@ -37,10 +37,23 @@ const Dashboard = () => {
     getUserInfo();
   }, []);
 
+  // Logout handler function
+  const handleLogout = () => {
+    localStorage.removeItem("token");  
+    setIsLoggedOut(true); 
+    navigate("/SignIn");  
+  };
+
+  // If the user is logged out, show only the SignInPage
+  if (isLoggedOut) {
+    return <SignInPage />;
+  }
+
   return (
     <>
       <div>
         <Navbar />
+       
       </div>
       <div className="d-flex" style={{ marginTop: "3%" }}>
         <div
@@ -48,13 +61,13 @@ const Dashboard = () => {
           id="sidebar"
         >
           <div className="profile-pic-container">
-          <Nav.Link as={Link} to="accountInformation" className="text-white mb-3">
-            <img
-              src="https://mrwallpaper.com/images/hd/cool-smiley-profile-picture-6lqzc2aegkuxbini.jpg"
-              alt="Profile"
-              className="profile-pic"
-            />
-           </Nav.Link>
+            <Nav.Link as={Link} to="accountInformation" className="text-white mb-3">
+              <img
+                src="https://mrwallpaper.com/images/hd/cool-smiley-profile-picture-6lqzc2aegkuxbini.jpg"
+                alt="Profile"
+                className="profile-pic"
+              />
+            </Nav.Link>
           </div>
           <div className="text-center mt-5">
             <h5>
@@ -95,7 +108,11 @@ const Dashboard = () => {
               </Nav.Link>
             </div>
 
-            <Nav.Link as={Link} to="signInPage" className="text-white mb-2 mt-auto">
+            {/* Logout link */}
+            <Nav.Link
+              className="text-white mb-2 mt-auto"
+              onClick={handleLogout}  // Call handleLogout on click
+            >
               <i className="bi bi-box-arrow-left me-2"></i> Logout
             </Nav.Link>
           </Nav>
@@ -107,19 +124,16 @@ const Dashboard = () => {
         >
           <Routes>
             <Route path="taskDashboard" element={<TaskDashboard />} />
-          
- 
-            <Route path="taskCategory/*" element={<TaskCategory/>} />
-          
-           
-         
+            <Route path="taskCategory/*" element={<TaskCategory />} />
             <Route path="ad-task" element={<AdTaskModal />} />
-            <Route path="accountInformation" element={<AccountInformation/>} />
-            <Route path="signInPage" element={<SignInPage/>} />
-            <Route path="taskCategory/AddCreatecategoryForm"element={<AddCreatecategoryForm />} />
+            <Route path="accountInformation" element={<AccountInformation />} />
+            <Route path="signInPage" element={<SignInPage />} />
+            <Route
+              path="taskCategory/AddCreatecategoryForm"
+              element={<AddCreatecategoryForm />}
+            />
             <Route path="Vitaltask" element={<Vitaltask />} />
             <Route path="myTask" element={<MyTask />} />
-           
           </Routes>
         </div>
       </div>

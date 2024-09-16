@@ -1,27 +1,34 @@
-
-// export default SignupPage;
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PersonFill, EnvelopeFill, LockFill, Image } from "react-bootstrap-icons";
+import loginimg from "../components/img/R2.png"; // Adjust the path as necessary
+import "./CSS/Register.css"; // Ensure this CSS file exists and includes your styling
 
 const SignupPage = () => {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    profilepic: "",
+    agreeTerms: false,
+  });
 
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const firstnamechange = (e) => setFirstname(e.target.value);
-  const lastnamechange = (e) => setLastname(e.target.value);
-  const usernamechange = (e) => setUsername(e.target.value);
-  const emailchange = (e) => setEmail(e.target.value);
-  const passwordchange = (e) => setPassword(e.target.value);
-  const confirmPasswordChange = (e) => setConfirmPassword(e.target.value);
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   async function register(payload) {
     try {
@@ -38,139 +45,199 @@ const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
-
-    const payload = {
-      firstname,
-      lastname,
-      username,
-      email,
-      password,
-      confirmPassword,
-    };
-    await register(payload);
+    if (!formData.agreeTerms) {
+      toast.error("You must agree to the terms");
+      return;
+    }
+    setError("");
+    await register(formData);
   };
 
   return (
-    <section
-      className="h-100 d-flex justify-content-center align-items-center"
-      style={{  minHeight: "90vh" }}
-    >
-      <div className="container py-5">
-        <div className="row d-flex justify-content-center">
-          <div className="col-lg-6 col-xl-5">
-            <div
-              className="card rounded-3"
-              style={{ width: "100%", maxWidth: "500px" }}
-            >
-              <div className="card-body p-4 p-md-5">
-                <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-center">
-                  Registration Info
-                </h3>
+    <div className="hero">
+      <div className="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="card shadow-lg" style={{ maxWidth: "900px" }} id="hero1">
+          <div className="card-body p-0">
+            <div className="row g-0">
+              {/* Left Image Section */}
+              <div className="col-lg-5 d-none d-lg-block">
+                <img
+                  src={loginimg}
+                  alt="Person interacting with screens"
+                  className="img-fluid h-80"
+                  style={{
+                    borderTopLeftRadius: ".25rem",
+                    borderBottomLeftRadius: ".25rem",
+                    marginTop: "100px",
+                  }}
+                />
+              </div>
 
-                <form className="px-md-2" onSubmit={handleSubmit}>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="firstname">
-                      Firstname
-                    </label>
-                    <input
-                      type="text"
-                      id="firstname"
-                      className="form-control"
-                      value={firstname}
-                      onChange={firstnamechange}
-                      required
-                    />
-                  </div>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="lastname">
-                      Lastname
-                    </label>
-                    <input
-                      type="text"
-                      id="lastname"
-                      className="form-control"
-                      value={lastname}
-                      onChange={lastnamechange}
-                      required
-                    />
-                  </div>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="username">
-                      Username
-                    </label>
-                    <input
-                      type="text"
-                      id="username"
-                      className="form-control"
-                      value={username}
-                      onChange={usernamechange}
-                      required
-                    />
-                  </div>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="email">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="form-control"
-                      value={email}
-                      onChange={emailchange}
-                      required
-                    />
-                  </div>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="password">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      className="form-control"
-                      value={password}
-                      onChange={passwordchange}
-                      required
-                    />
+              {/* Right Form Section */}
+              <div className="col-lg-7 p-5">
+                <h2 className="text-center mb-4">Sign Up</h2>
+                <form onSubmit={handleSubmit}>
+                  {/* First Name Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <PersonFill />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter First Name"
+                        name="firstname"
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
 
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="confirmPassword">
-                      Confirm Password
-                    </label>
-                    <input
-                      type="password"
-                      id="confirmPassword"
-                      className="form-control"
-                      value={confirmPassword}
-                      onChange={confirmPasswordChange}
-                      required
-                    />
+                  {/* Last Name Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <PersonFill />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Last Name"
+                        name="lastname"
+                        value={formData.lastname}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
 
+                  {/* Username Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <PersonFill />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Username"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <EnvelopeFill />
+                      </span>
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Enter Email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Password Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <LockFill />
+                      </span>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Enter Password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Confirm Password Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <LockFill />
+                      </span>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Confirm Password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Profile Picture Input
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <Image />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Add profile pic"
+                        name="profilepic"
+                        value={formData.profilepic}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div> */}
+
+                  {/* Agree Terms Checkbox */}
+                  <div className="mb-3 form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="agreeTerms"
+                      name="agreeTerms"
+                      checked={formData.agreeTerms}
+                      onChange={handleChange}
+                      required
+                    />
+                    <label className="form-check-label" htmlFor="agreeTerms">
+                      I agree to all terms
+                    </label>
+                  </div>
+
+                  {/* Submit Button */}
                   <button
                     type="submit"
-                    className="btn btn-success btn-lg mb-4"
-                    style={{
-                      display: "block",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }}
+                    id="register"
+                    className="btn btn-danger text-white mb-3"
                   >
                     Register
                   </button>
+
+                  {/* Redirect to Sign In */}
                   <div className="text-center">
                     <p>
                       Already have an account?{" "}
                       <Link to="/SignIn">
-                        <span type="button" style={{ color: "blue" }}>
-                          Login
-                        </span>
+                        <span className="text-info">Sign In</span>
                       </Link>
                     </p>
                   </div>
@@ -181,7 +248,7 @@ const SignupPage = () => {
         </div>
       </div>
       <ToastContainer />
-    </section>
+    </div>
   );
 };
 

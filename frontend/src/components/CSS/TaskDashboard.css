@@ -1,6 +1,7 @@
 /* General styles */
 .container {
   margin-top: 10%;
+  margin-left: auto;
 }
 
 .task-card {

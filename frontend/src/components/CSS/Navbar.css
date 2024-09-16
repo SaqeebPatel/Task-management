@@ -182,3 +182,51 @@
         top: 100%;
     }
 }
+
+/* Modal overlay styles */
+.modal-overlay {
+    position: absolute;
+    top: 100px; /* Adjust based on your navbar height */
+    right: 0;
+    width: 400px; /* Adjust width as needed */
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1000;
+  }
+  
+  /* Modal content styles */
+  .modal-content {
+    padding: 15px;
+  }
+  
+  /* Modal close button styles */
+  .btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #f45a5a;
+    cursor: pointer;
+  }
+  
+  /* Image inside the modal */
+  .modal-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  /* Ensure dropdown fits within screen */
+  @media (max-width: 992px) {
+    .modal-overlay {
+      width: 100%; /* Full width on smaller screens */
+      right: auto;
+      left: 0;
+      top: 100%;
+    }
+  }
+  

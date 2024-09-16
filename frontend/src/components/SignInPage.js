@@ -1,20 +1,25 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PersonFill, LockFill } from "react-bootstrap-icons";
+import loginimg from "../components/img/ach3.png"; // Adjust the path as necessary
+import "../components/CSS/SignIn.css"; // Import the CSS file
 
-const SignIn = () => {
+const SignInPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const usernamechange = (e) => {
+  const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
-  const handlepassword = (e) => {
+
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
@@ -34,7 +39,7 @@ const SignIn = () => {
       return success;
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        toast.error("Invalid Email or Password");
+        toast.error("Invalid Username or Password");
       } else if (error.response && error.response.status === 404) {
         toast.error("User is not registered");
       } else {
@@ -53,71 +58,88 @@ const SignIn = () => {
   };
 
   return (
-    <section className="h-100 h-custom" >
-      <div className="container py-5 h-900" style={{ height: "100vh" }}>
-        <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-lg-6 col-xl-5">
-            <div
-              className="card rounded-3"
-              style={{ width: "100%", maxWidth: "500px" }}
-            >
-              <div className="card-body p-4 p-md-5">
-                <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Login</h3>
-
-                <form className="px-md-2" onSubmit={handleSubmit}>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="email">
-                      Username
-                    </label>
-                    <input
-                      type="text"
-                      id="username"
-                      className="form-control"
-                      value={username}
-                      onChange={usernamechange}
-                    />
-                  </div>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="password">
-                      PASSWORD
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      className="form-control"
-                      value={password}
-                      onChange={handlepassword}
-                    />
+    <div className="signin-hero">
+      <div className="signin-container d-flex align-items-center justify-content-center">
+        <div className="signin-card shadow-lg" id="signin-card">
+          <div className="signin-card-body p-0">
+            <div className="row g-0">
+              {/* Left Form Section */}
+              <div className="col-lg-7 p-5">
+                <h2 className="text-center mb-4">Sign In</h2>
+                <form onSubmit={handleSubmit}>
+                  {/* Username Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <PersonFill />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Username"
+                        name="username"
+                        value={username}
+                        onChange={handleUsernameChange}
+                        required
+                      />
+                    </div>
                   </div>
 
+                  {/* Password Input */}
+                  <div className="mb-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <LockFill />
+                      </span>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Enter Password"
+                        name="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
                   <button
                     type="submit"
-                    className="btn btn-success btn-lg mb-1"
-                    style={{
-                      display: "block",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }}
+                    id="login"
+                    className="btn btn-danger text-white mb-3"
                   >
                     Login
                   </button>
-                  <h8 style={{ marginLeft: "20%" }}>
-                    You have to register first!{" "}
-                    <Link to="/">
-                      <span type="button" style={{ color: "blue" }}>
-                        Register
-                      </span>
-                    </Link>
-                  </h8>
+
+                  {/* Redirect to Sign Up */}
+                  <div className="text-center">
+                    <p>
+                      Don't have an account?{" "}
+                      <Link to="/">
+                        <span className="text-info">Sign Up</span>
+                      </Link>
+                    </p>
+                  </div>
                 </form>
+              </div>
+
+              {/* Right Image Section */}
+              <div className="col-lg-5 d-none d-lg-block mt-5" >
+                <img
+                  src={loginimg}
+                  alt="Person interacting with screens"
+                  className="img-fluid h-80"
+                  id="signin-img"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
       <ToastContainer />
-    </section>
+    </div>
   );
 };
 
-export default SignIn;
+export default SignInPage;
