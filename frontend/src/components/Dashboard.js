@@ -10,6 +10,7 @@ import AccountInformation from "../components/SideNavbarItems/AccountInformation
 import AddCreatecategoryForm from "../components/SideNavbarItems/AddCreatecategoryForm";
 import SignInPage from "../components/SignInPage";
 import Vitaltask from "../components/SideNavbarItems/VitalTasks";
+import TaskDetails from "../components/SideNavbarItems/TaskDetails";
 import MyTask from "../components/SideNavbarItems/MyTask";
 import "../components/CSS/Sidebar.css";
 
@@ -130,10 +131,13 @@ const Dashboard = () => {
             <Route path="signInPage" element={<SignInPage />} />
             <Route
               path="taskCategory/AddCreatecategoryForm"
-              element={<AddCreatecategoryForm />}
-            />
+              element={<AddCreatecategoryForm />} />
             <Route path="Vitaltask" element={<Vitaltask />} />
             <Route path="myTask" element={<MyTask />} />
+            <Route path="/taskDashboard/TaskDetails/:taskId" element={<TaskDetails />} />
+            {/* <Route
+              path="/taskDashboard/taskdetails/:taskId"
+              element={<TaskDetails />} */}
           </Routes>
         </div>
       </div>

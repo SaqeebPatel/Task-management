@@ -1,7 +1,4 @@
 
-
-
-
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import axios from "axios";
@@ -73,8 +70,12 @@ function AddTaskModal({ show, handleClose }) {
 
   return (
     <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton>
+      <Modal.Header >
+      
         <Modal.Title>Add New Task</Modal.Title>
+        <Button variant="form-label" onClick={handleClose} style={{marginLeft:"200px"}}>
+          Close
+        </Button>
       </Modal.Header>
       <Modal.Body>
         {error && <Alert variant="danger">{error}</Alert>}
@@ -168,6 +169,9 @@ function AddTaskModal({ show, handleClose }) {
           </Button>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        
+      </Modal.Footer>
     </Modal>
   );
 }

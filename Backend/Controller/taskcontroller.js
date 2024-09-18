@@ -93,18 +93,32 @@ const addCollaborator = async (req, res) => {
 };
 
 // *******getalltask***************
-async function gettaskbyid(req, res) {
-  console.log(req.body);
-  const { id } = req.params;
+async function getTaskById(req, res) {
   try {
-    const task = await taskmodel.findById(id);
-    console.log(id);
+    const task = await taskmodel.findById(req.params.taskId);
+
     if (!task) {
-      res.status(404).send({ msg: "task id is not found", success: false });
+      return res.status(404).send({ error: "Task not found", success: false });
     }
-    return res.status(201).send({ msg: "This is task", task, success: true });
+
+    const modifiedTask = {
+      _id: task._id,
+      title: task.title,
+      description: task.description,
+      category: task.category,
+      priority: task.priority,
+      taskDate: task.taskDate,
+      status: task.status,
+      image: task.image ? `http://localhost:5000/uploads/${task.image}` : null,
+      createdBy: task.createdBy,
+      createdAt: task.createdAt,
+      collaboraters: task.collaboraters,
+    };
+
+    res.status(200).send({ task: modifiedTask, success: true });
   } catch (error) {
-    res.status(500).send({ error, success: false });
+    console.error(error);
+    res.status(500).send({ error: "Server error", success: false });
   }
 }
 
@@ -201,7 +215,7 @@ const getFilteredTasks = async (req, res) => {
     });
   }
 };
-// .............................................................
+// .........................getTasksForUser....................................
 const getTasksForUser = async (req, res) => {
   try {
     // Fetch tasks created by the logged-in user
@@ -221,7 +235,7 @@ module.exports = {
   //   ***Addcollbolaters***
   addCollaborator,
   //   *************
-  gettaskbyid,
+  getTaskById,
   getalltask,
   updatetask,
   deletetask,

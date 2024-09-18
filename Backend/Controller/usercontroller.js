@@ -70,7 +70,7 @@ async function userinfo(req, res) {
     const user = await usermodel.findById(id);
     console.log(user);
     if (!user) {
-      res.status(404).send({ msg: "User does not found", success: false });
+      res.status(404).send({ msg: "User not found", success: false });
     } else {
       res.status(201).send({ user: user, success: true });
     }
@@ -90,9 +90,48 @@ async function getAllUsers(req, res) {
     res.status(500).send({ error: error.message, success: false });
   }
 }
+// ...................................... Update User ...................................
+async function updateuser(req, res) {
+  console.log(req.body);
+  const { id: userid } = req.params;
+  const {
+    firstname,
+    lastname,
+    username,
+    password,
+    confirmPassword,
+    image,
+    ContactNumber,
+    Position,
+  } = req.body;
+  
+  try {
+    const user = await usermodel.findByIdAndUpdate(userid);
+    if (!user) {
+      res.status(404).send({ msg: "User ID not found" });
+    }
+    user.firstname = firstname || user.firstname;
+    user.lastname = lastname || user.lastname;
+    user.username = username || user.username;
+    user.password = password || user.password;
+    user.confirmPassword = confirmPassword || user.confirmPassword;
+    user.image = image || user.image;
+    user.ContactNumber = ContactNumber || user.ContactNumber;
+    user.Position = Position || user.Position;
+    await user.save();
+    res
+      .status(201)
+      .send({ message: "User updated successfully", success: true });
+  } catch (error) {
+    res.status(500).send({ error: "Server error", success: false });
+  }
+}
+
+// Exporting the functions
 module.exports = {
   register,
   login,
   userinfo,
-  getAllUsers
+  getAllUsers,
+  updateuser, // Ensure the name matches the defined function
 };

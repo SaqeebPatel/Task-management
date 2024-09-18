@@ -53,7 +53,7 @@ const SignInPage = () => {
     e.preventDefault();
     const loginSuccess = await login({ username, password });
     if (loginSuccess) {
-      navigate("/dashboard");
+      navigate("/dashboard/taskDashboard");
     }
   };
 

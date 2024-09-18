@@ -86,32 +86,29 @@ import { Modal, Button, Form, Dropdown, Spinner, Alert } from "react-bootstrap";
 import axios from "axios";
 import "../CSS/InviteModal.css"; // Import the CSS file
 
-function InviteModal({ show, handleClose }) {
+function InviteModal({ show, onHide }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
-      setLoading(true); // Start loading when fetching begins
-      setError(""); // Reset error message before fetching
+      setLoading(true);
+      setError("");
 
       try {
         const response = await axios.get("http://localhost:5000/api/user/getusers");
-        const data = response.data;
+        const { users: fetchedUsers } = response.data;
 
-        // Check if the response contains the 'users' property and that it is an array
-        if (data && Array.isArray(data.users)) {
-          setUsers(data.users);
+        if (Array.isArray(fetchedUsers)) {
+          setUsers(fetchedUsers);
         } else {
-          console.error("Unexpected response format:", data);
           setError("Failed to load users.");
         }
       } catch (err) {
-        console.error("Failed to load users:", err);
         setError("Failed to load users.");
       } finally {
-        setLoading(false); // Stop loading regardless of success or failure
+        setLoading(false);
       }
     };
 
@@ -121,11 +118,16 @@ function InviteModal({ show, handleClose }) {
   }, [show]);
 
   return (
-    <Modal show={show} onHide={handleClose} centered className="invite-modal">
-      <Modal.Header closeButton>
+    <Modal show={show} onHide={onHide} centered className="invite-modal">
+      <Modal.Header>
         <Modal.Title>Send an invite to a new member</Modal.Title>
-        <Button variant="form-label" onClick={handleClose} style={{ marginLeft: "120px" }}>
-          Close
+        <Button
+          variant="close"
+          onClick={onHide}
+          aria-label="Close"
+          style={{ marginLeft: "auto" }} // Move to the right
+        >
+          <span aria-hidden="true">&times;</span>
         </Button>
       </Modal.Header>
       <Modal.Body>
@@ -145,7 +147,7 @@ function InviteModal({ show, handleClose }) {
               />
               <Button
                 className="send-button"
-                style={{ width: "150px", marginLeft: "20px", backgroundColor: "#F24E1E", borderColor: "#F24E1E" }} // Increased width
+                style={{ width: "150px", marginLeft: "20px", backgroundColor: "#F24E1E", borderColor: "#F24E1E" }}
               >
                 Send Invite
               </Button>
@@ -153,7 +155,7 @@ function InviteModal({ show, handleClose }) {
 
             {/* Member List */}
             <div className="member-list">
-              {users.length > 0 ? (
+              {users.length ? (
                 users.map((user) => (
                   <div className="member-item" key={user.email}>
                     <img
@@ -167,7 +169,7 @@ function InviteModal({ show, handleClose }) {
                     </div>
                     <Dropdown className="member-role-dropdown">
                       <Dropdown.Toggle variant="form-label" id="dropdown-basic">
-                      Can edit
+                        Can edit
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item>Can edit</Dropdown.Item>
@@ -178,7 +180,7 @@ function InviteModal({ show, handleClose }) {
                   </div>
                 ))
               ) : (
-                !loading && <p>No users found.</p> // Display only if not loading
+                !loading && <p>No users found.</p>
               )}
             </div>
 
@@ -195,7 +197,7 @@ function InviteModal({ show, handleClose }) {
                 />
                 <Button
                   className="copy-link-button"
-                  style={{ width: "150px", marginLeft: "20px", backgroundColor: "#F24E1E", borderColor: "#F24E1E" }} // Increased width
+                  style={{ width: "150px", marginLeft: "20px", backgroundColor: "#F24E1E", borderColor: "#F24E1E" }}
                 >
                   Copy Link
                 </Button>
@@ -204,9 +206,6 @@ function InviteModal({ show, handleClose }) {
           </Form>
         )}
       </Modal.Body>
-      <Modal.Footer>
-        {/* Optional footer content */}
-      </Modal.Footer>
     </Modal>
   );
 }
